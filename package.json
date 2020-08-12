@@ -1,15 +1,13 @@
 {
   "devDependencies": {
-    "terser": "^5.0.0",
     "parcel": "^1.12.4"
   },
   "name": "irajs",
-  "version": "0.0.1",
+  "version": "0.0.2-beta.1",
   "description": "Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒",
-  "main": "index.min.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "parcel ./index.html",
-    "build": "terser ./src/index.js -c -m -o ./index.min.js"
+    "start": "parcel ./index.html"
   },
   "repository": {
     "type": "git",

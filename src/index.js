@@ -1,7 +1,7 @@
 /**
  * Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒
- * Developed by: Denny Portillo<hello@d3portillo.me>
- * Licence: MIT
+ * @licence MIT
+ * @author Denny Portillo<hello@d3portillo.me>
  */
 
 // * Ira settings initial consts
@@ -25,45 +25,42 @@ const IRA_METHODS_WITHOUT_BODY = [
   IRA_METHODS.head,
   IRA_METHODS.delete,
 ]
-const DEFAULT_METHOD_OPTIONS = { acceptsBody: true }
 const IRA = "IraFetch >>>"
-
-// * Helpers
-const deepify = (obj = {}) => {
-  // Stringify all obj props
-  const container = {}
-  Object.keys(obj).forEach((prop) => {
-    let value = obj[prop]
-    if (typeof value != "string") {
-      value = JSON.stringify(value)
-    }
-    container[prop] = value
-  })
-  return container
-}
 
 // * Ira config main settings object
 var persistentIraConfig = { ...INIT_IRA_CONFIG }
-const makeIraFetch = (method = "GET", options = DEFAULT_METHOD_OPTIONS) => {
+const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
   /**
-   * @typedef IraResponse
-   * @property {{ json: ?Object, text: string, blob: ?Blob }} data
-   * @property {Boolean} ok
+   * Ira Response Object
+   * @typedef {Object} IraResponse
+   * @property {{ json: Object, text: string, blob: ?Blob }} data - Posible parsed response body
+   * @property {Boolean} ok - Response status <= 300
    * @property {number} status
    * @property {string} statusText
    * @property {number} statusCode
-   * @property {?Error} error
+   * @property {?Error} error - Null if nothing wrong
    */
 
   /**
-   * @param {string} url
-   * @param {{ headers: {}, body: ?string }} extra
+   * @param {string} url - URL To fetch from
+   * @param {{ headers: {}, body: ?string }} extra - Your normal fetch opts
    * @return {Promise<IraResponse>}
    */
   const fetchPromise = (url, extra = {}, config = {}) => {
     config = { ...INIT_IRA_CONFIG, ...config }
     let { headers = {}, body = "" } = extra
-
+    const deepify = (obj = {}) => {
+      // Stringify all obj props
+      const container = {}
+      Object.keys(obj).forEach((prop) => {
+        let value = obj[prop]
+        if (typeof value != "string") {
+          value = JSON.stringify(value)
+        }
+        container[prop] = value
+      })
+      return container
+    }
     // We deepify body and headers
     headers = deepify({ ...config.headers, ...headers })
     const contentType = headers["Content-Type"] || ""
@@ -132,14 +129,13 @@ const makeIraFetch = (method = "GET", options = DEFAULT_METHOD_OPTIONS) => {
               }
             )
             send({
-              data: null,
+              data: { json: {}, text: "", blob: null },
               ok: false,
               status,
               statusText: error,
               statusCode: 500,
               error,
             })
-            throw error
           })
       })
     } catch (e) {
@@ -186,11 +182,14 @@ ira.trace = makeIraFetch(IRA_METHODS.trace, {
   acceptsBody: true,
 })
 
-// * Exposes Ira persistent config props
+/**
+ * Ira persistent config props
+ * @type {INIT_IRA_CONFIG}
+ */
 ira._config = {}
 
 // * Function helper to update Ira global var and in function settings
-const setIraConfig = (config = {}) => {
+ira.setIraConfig = (config = {}) => {
   persistentIraConfig = { ...persistentIraConfig, ...config }
   ira._config = persistentIraConfig
 }
@@ -199,14 +198,14 @@ const setIraConfig = (config = {}) => {
  * Sets persisten config headers or body for future requests
  * @param { INIT_IRA_CONFIG } config
  */
-ira.config = () => setIraConfig(config)
+ira.config = (config) => ira.setIraConfig(config)
 
 /**
  * Sets config and returns a modded Ira function with new config
  * @param { INIT_IRA_CONFIG } config
  */
 ira.extend = (config) => {
-  /**
+  /** Your custom settings Ira fork
    * @param {string} url
    * @param {{ headers: {}, body: ?string }} extra
    */
@@ -233,7 +232,7 @@ ira.extend = (config) => {
 }
 
 // * Reset function sets default INIT Config
-ira.reset = () => setIraConfig(INIT_IRA_CONFIG)
+ira.reset = () => ira.setIraConfig(INIT_IRA_CONFIG)
 
 // * Exporting function
 // This won't succeed if on node env
