@@ -1,5 +1,31 @@
 {
   "devDependencies": {
+    "terser": "^5.0.0",
     "parcel": "^1.12.4"
-  }
+  },
+  "name": "irajs",
+  "version": "0.0.1",
+  "description": "Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒",
+  "main": "index.min.js",
+  "scripts": {
+    "start": "parcel ./index.html",
+    "build": "terser ./src/index.js -c -m -o ./index.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D3Portillo/ira.git"
+  },
+  "keywords": [
+    "fetch",
+    "wrapper",
+    "fetch-api",
+    "browser",
+    "request"
+  ],
+  "author": "Denny Portillo <d3portillo@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/D3Portillo/ira/issues"
+  },
+  "homepage": "https://github.com/D3Portillo/ira#readme"
 }
