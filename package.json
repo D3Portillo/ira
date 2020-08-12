@@ -1,7 +1,4 @@
 {
-  "devDependencies": {
-    "parcel": "^1.12.4"
-  },
   "name": "irajs",
   "version": "0.0.2-beta.1",
   "description": "Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒",

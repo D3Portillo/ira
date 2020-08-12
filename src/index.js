@@ -9,6 +9,7 @@ const INIT_IRA_CONFIG = {
   headers: {},
   debug: false,
   parseBlob: true,
+  baseURL: undefined,
 }
 const IRA_METHODS = {
   get: "GET",
@@ -27,23 +28,24 @@ const IRA_METHODS_WITHOUT_BODY = [
 ]
 const IRA = "IraFetch >>>"
 
-// * Ira config main settings object
+// * User Ira config object
 var persistentIraConfig = { ...INIT_IRA_CONFIG }
 const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
   /**
    * Ira Response Object
    * @typedef {Object} IraResponse
-   * @property {{ json: Object, text: string, blob: ?Blob }} data - Posible parsed response body
+   * @property {{ json: Object, text: String, blob: ?Blob }} data - Posible parsed response body
    * @property {Boolean} ok - Response status <= 300
    * @property {number} status
-   * @property {string} statusText
+   * @property {String} statusText
    * @property {number} statusCode
    * @property {?Error} error - Null if nothing wrong
    */
 
   /**
-   * @param {string} url - URL To fetch from
-   * @param {{ headers: {}, body: ?string }} extra - Your normal fetch opts
+   * @param {String} url - URL To fetch from
+   * @param {{ headers: {}, body: ?String }} extra - Your normal fetch opts
+   * @param {INIT_IRA_CONFIG} config - Custom Ira config
    * @return {Promise<IraResponse>}
    */
   const fetchPromise = (url, extra = {}, config = {}) => {
@@ -69,6 +71,8 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
       body = deepify(body)
     }
     try {
+      const { baseURL, parseBlob } = config
+      url = baseURL ? `${baseURL}${url}` : url
       const { fetch } = window
       if (!fetch) throw new Error("Not inside a browser")
       if (!url) throw new Error("URL not provided")
@@ -84,7 +88,7 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
             const clone = response.clone()
             Promise.all([
               response.text(),
-              config.parseBlob ? clone.blob() : null,
+              parseBlob ? clone.blob() : null,
             ]).then(([a, b]) => {
               // * [a] must be string
               if (typeof b == "string") {
@@ -108,19 +112,19 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
                 error: null,
               })
               if (config.debug) {
-                console.info(`${IRA} REQ_URL='${url}' >>> FULL_REQ_DATA: `, {
+                console.info(`${IRA} REQ_URL='${url}' >>> REQ_DATA: `, {
                   headers,
                   body,
                   config,
                   extra,
-                  response,
                 })
               }
             })
           })
           .catch((error) => {
+            const statusCode = 500 // Will need to figure out how to get  status
             console.error(
-              `${IRA}, got error on request. REQ_URL='${url}' >>> FULL_REQ_DATA: `,
+              `${IRA} - Got error on request, REQ_URL='${url}' >>> REQ_DATA: `,
               {
                 error,
                 headers,
@@ -129,9 +133,9 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
               }
             )
             send({
-              data: { json: {}, text: "", blob: null },
+              data: { json: {}, text: "", blob: null } /* Void data */,
               ok: false,
-              status,
+              status: statusCode,
               statusText: error,
               statusCode: 500,
               error,
@@ -206,11 +210,11 @@ ira.config = (config) => ira.setIraConfig(config)
  */
 ira.extend = (config) => {
   /** Your custom settings Ira fork
-   * @param {string} url
-   * @param {{ headers: {}, body: ?string }} extra
+   * @param {String} url
+   * @param {{ headers: {}, body: ?String }} extra
    */
   const defaultFunction = (url, extra) => null
-  const myMethodsInterface = {
+  const myMethods = {
     get: defaultFunction,
     put: defaultFunction,
     post: defaultFunction,
@@ -220,15 +224,17 @@ ira.extend = (config) => {
     options: defaultFunction,
     trace: defaultFunction,
   }
-  Object.keys(methods).map((name) => {
-    const f = makeIraFetch(name.toUpperCase(), {
-      acceptsBody: !IRA_METHODS_WITHOUT_BODY.includes(name),
+  Object.keys(IRA_METHODS).map((name) => {
+    const METHOD = name.toUpperCase()
+    const acceptsBody = !IRA_METHODS_WITHOUT_BODY.includes(METHOD)
+    const f = makeIraFetch(METHOD, {
+      acceptsBody,
     })
-    myMethodsInterface[name] = (u, o) => f(u, o, config)
+    myMethods[name] = (u, o) => f(u, o, config)
   })
 
   // Extend returns methods constrained to user config
-  return myMethodsInterface
+  return myMethods
 }
 
 // * Reset function sets default INIT Config
