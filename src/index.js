@@ -28,7 +28,7 @@ var IRA_METHODS_WITHOUT_BODY = [
   IRA_METHODS.head,
   IRA_METHODS.delete,
 ]
-var IRA = "IraFetch >>>"
+var IRA_LOG = "IraFetch >>>"
 
 // * User Ira config object
 var persistentIraConfig = { ...INIT_IRA_CONFIG }
@@ -130,7 +130,7 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
                 error: null,
               })
               if (config.debug) {
-                console.info(`${IRA} REQ_URL='${url}' >>> REQ_DATA: `, {
+                console.info(`${IRA_LOG} REQ_URL='${url}' >>> REQ_DATA: `, {
                   headers,
                   body,
                   config,
@@ -142,7 +142,7 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
           .catch((error) => {
             const statusCode = 500 // Will need to figure out how to get  status
             console.error(
-              `${IRA} - Got error on request, REQ_URL='${url}' >>> REQ_DATA: `,
+              `${IRA_LOG} - Got error on request, REQ_URL='${url}' >>> REQ_DATA: `,
               {
                 error,
                 headers,
@@ -161,7 +161,7 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
           })
       })
     } catch (e) {
-      console.error(`${IRA} ${e}`)
+      console.error(`${IRA_LOG} >>> ${e}`)
     }
   }
   return fetchPromise

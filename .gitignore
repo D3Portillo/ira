@@ -4,3 +4,4 @@ public
 .cache
 yarn.**
 tempo
+tests/index.html
