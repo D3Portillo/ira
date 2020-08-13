@@ -1,11 +1,8 @@
 {
   "name": "irajs",
-  "version": "0.0.2-beta.1",
+  "version": "0.0.4",
   "description": "Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒",
   "main": "src/index.js",
-  "scripts": {
-    "start": "parcel ./index.html"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/D3Portillo/ira.git"

@@ -2,16 +2,18 @@
  * Ira Fetch - Vanilla JS Fetch API wrapper with goodies 🍒
  * @licence MIT
  * @author Denny Portillo<hello@d3portillo.me>
+ * @version 0.0.3
+ * @see https://github.com/d3portillo/ira
  */
 
-// * Ira settings initial consts
-const INIT_IRA_CONFIG = {
+// * Ira settings initial vars
+var INIT_IRA_CONFIG = {
   headers: {},
   debug: false,
   parseBlob: true,
   baseURL: undefined,
 }
-const IRA_METHODS = {
+var IRA_METHODS = {
   get: "GET",
   put: "PUT",
   post: "POST",
@@ -21,16 +23,17 @@ const IRA_METHODS = {
   options: "OPTIONS",
   trace: "TRACE",
 }
-const IRA_METHODS_WITHOUT_BODY = [
+var IRA_METHODS_WITHOUT_BODY = [
   IRA_METHODS.get,
   IRA_METHODS.head,
   IRA_METHODS.delete,
 ]
-const IRA = "IraFetch >>>"
+var IRA = "IraFetch >>>"
 
 // * User Ira config object
 var persistentIraConfig = { ...INIT_IRA_CONFIG }
-const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
+
+function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
   /**
    * Ira Response Object
    * @typedef {Object} IraResponse
@@ -44,13 +47,13 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
 
   /**
    * @param {String} url - URL To fetch from
-   * @param {{ headers: {}, body: ?String }} extra - Your normal fetch opts
+   * @param {{ headers: {}, body: ?String, params: {} }} extra - Your normal fetch opts
    * @param {INIT_IRA_CONFIG} config - Custom Ira config
    * @return {Promise<IraResponse>}
    */
   const fetchPromise = (url, extra = {}, config = {}) => {
     config = { ...INIT_IRA_CONFIG, ...config }
-    let { headers = {}, body = "" } = extra
+    let { headers = {}, body = "", params = {} } = extra
     const deepify = (obj = {}) => {
       // Stringify all obj props
       const container = {}
@@ -73,6 +76,18 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
     try {
       const { baseURL, parseBlob } = config
       url = baseURL ? `${baseURL}${url}` : url
+      /***
+       * Parsing obj to search params
+       * @type {URLSearchParams}
+       * @see https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+       */
+      const myParams = new URLSearchParams(params).toString()
+      const paramsChain = myParams.toString()
+      if (paramsChain.length) {
+        const lastChar = url.charAt(url.length - 1)
+        if (lastChar != "/") url = `${url}/`
+        url = `${url}?${paramsChain}`
+      }
       const { fetch } = window
       if (!fetch) throw new Error("Not inside a browser")
       if (!url) throw new Error("URL not provided")
@@ -94,17 +109,20 @@ const makeIraFetch = (method = "GET", options = { acceptsBody: true }) => {
               if (typeof b == "string") {
                 ;[a, b] = [b, a]
               }
+              let text = a
               let json = {}
               try {
                 /*
                 * Tries to parse content to JSON.
                 This setting is not listed on settings because if Response
                 is plain text, JSON parse wont succeed
-              */
+                */
                 json = JSON.parse(a)
+                // Since we could parse JSON text isn't added to resposne
+                text = ""
               } catch (_) {}
               send({
-                data: { json, text: a, blob: b },
+                data: { json, text, blob: b },
                 ok,
                 status,
                 statusText,
@@ -243,5 +261,5 @@ ira.reset = () => ira.setIraConfig(INIT_IRA_CONFIG)
 // * Exporting function
 // This won't succeed if on node env
 window.ira = ira
-module = "object" == typeof module ? module : {}
+var module = "object" == typeof module ? module : {}
 module.exports = ira

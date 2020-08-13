@@ -12,6 +12,12 @@ This intends to be writtend just using current JS engine features, no babel or t
 npm install --save irajs
 ```
 
+## Yarn Install
+
+```
+yarn add irajs
+```
+
 ## CDN
 
 ```html
@@ -27,7 +33,11 @@ Long live to Github Pages : )
 ```js
 ira.get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`).then(({ data }) => {
   console.log(data.json, data.text, data.blob)
-  // Automatic response parsing
+  // * Automatic response parsing
+  /*
+    You can do it also parsing params as
+    ira.get(URL, { params: { foo1: "bar1", foo2: "bar2" } })
+  */
 })
 ```
 
@@ -104,6 +114,20 @@ request.get("/post", { headers: { "a-header": "a-value" } }).then(({ data })=>{
 })
 ```
 
+### Fetching with params
+
+URL/?yourparams=avalue
+
+```js
+ira.get(`anendpoint`, {
+  params: {
+    token: 222,
+    "another-token": 354,
+  },
+})
+// http://anendpoint/?token=222&another-token=354
+```
+
 ## Ira Object instances
 
 ```js
@@ -115,7 +139,7 @@ IRA_RESPONSE = {
   statusCode: status<Number>,
   error:?Error
 }
-IRA_REQUEST_METHOD_PROPS = {
+IRA_REQUEST_PROPS = {
   headers: {},
   body: ?String,
   ...({
@@ -150,16 +174,26 @@ ira = {
 }
 ```
 
-| Name/Instance    | Params ?                           | Returns                 | Comments                                                                         |
-| ---------------- | ---------------------------------- | ----------------------- | -------------------------------------------------------------------------------- |
-| IRA_HTTP_METHODS | (`URL`,`IRA_REQUEST_METHOD_PROPS`) | `Promise<IRA_RESPONSE>` | Fetch API HTTP Methods                                                           |
-| default()        | (`URL`,`IRA_REQUEST_METHOD_PROPS`) | `Promise<IRA_RESPONSE>` | When you do Ira("URL")                                                           |
-| \_settings       | `NONE`                             | `Void`                  | Acces current Ira global settings                                                |
-| reset()          | `NONE`                             | `Void`                  | Resets persistence settings to default                                           |
-| config()         | `IRA_SETTINGS`                     | `Void`                  | Set ira settings (This affects all requests on main ira Object, not forked ones) |
-| extend()         | `IRA_SETTINGS`                     | `IRA_HTTP_METHODS`      | Returns a fork of Ira with just HTTP Methods and provided Ira Settings           |
+| Name/Instance    | Params ?                    | Returns                 | Comments                                                               |
+| ---------------- | --------------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| IRA_HTTP_METHODS | (`URL`,`IRA_REQUEST_PROPS`) | `Promise<IRA_RESPONSE>` | Fetch API HTTP Methods                                                 |
+| default()        | (`URL`,`IRA_REQUEST_PROPS`) | `Promise<IRA_RESPONSE>` | When you do Ira("URL")                                                 |
+| \_settings       | `NONE`                      | `Void`                  | Acces current Ira global settings                                      |
+| reset()          | `NONE`                      | `Void`                  | Resets persistence settings to default                                 |
+| config()         | `IRA_SETTINGS`              | `Void`                  | Set ira settings (This affects all requests)                           |
+| extend()         | `IRA_SETTINGS`              | `IRA_HTTP_METHODS`      | Returns a fork of Ira with just HTTP Methods and provided Ira Settings |
 
-> Ira stands for: Go To, rage or anger. That's all the feelings you have while handling HTTP stuff : )
+Ira will return a void response if an error ocurred and status of 500,
+I'm currently working on a way of returning status on error
+
+---
+
+> **Ira** stands for: Go to, rage or anger. That's all the feelings you have while handling HTTP stuff : )
+
+- Source: [./src/index.js](./src/index.js)
+- Changelog: [./CHANGELOG.md](./CHANGELOG.md)
+
+---
 
 ## TODO
 

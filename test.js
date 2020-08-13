@@ -8,6 +8,9 @@ console.info("POST METHOD")
 ira
   .post(`https://postman-echo.com/post`, {
     body: "This body will be returned",
+    params: {
+      token: 2,
+    },
   })
   .then(({ data }) => {
     console.log(data.json, data.text, data.blob)
@@ -25,3 +28,4 @@ const request = ira.extend({
 })
 
 request.get("/something")
+ira.get("/", { params: { foo1: "bar1", foo2: "bar2" } , debug: true})
