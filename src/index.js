@@ -74,7 +74,7 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
       body = deepify(body)
     }
     try {
-      const { baseURL, parseBlob } = config
+      let { baseURL, parseBlob } = config
       url = baseURL ? `${baseURL}${url}` : url
       /***
        * Parsing obj to search params
@@ -99,6 +99,7 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
           ...(options.acceptsBody ? { body } : {}),
         })
           .then((response) => {
+            console.log(response.type)
             const { ok, status, statusText } = response
             const clone = response.clone()
             Promise.all([
@@ -118,8 +119,12 @@ function makeIraFetch(method = "GET", options = { acceptsBody: true }) {
                 is plain text, JSON parse wont succeed
                 */
                 json = JSON.parse(a)
-                // Since we could parse JSON text isn't added to resposne
-                text = ""
+                // Since we could parse JSON text isn't added to response
+                if (typeof json == "string") {
+                  json = {}
+                } else {
+                  text = ""
+                }
               } catch (_) {}
               send({
                 data: { json, text, blob: b },

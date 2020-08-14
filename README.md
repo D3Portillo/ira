@@ -223,10 +223,11 @@ I'm currently working on a way of returning status on error
 
 ---
 
-- Source: [./src/index.js](./src/index.js)
-- Changelog: [./CHANGELOG.md](./CHANGELOG.md)
+- Source: [/src/index.js](./src/index.js)
+- Changelog: [/CHANGELOG.md](./CHANGELOG.md)
+- License: [/LICENSE](./LICENSE)
 
-> **Ira** stands for: Go to, rage or anger. That's all the feelings you have while handling HTTP stuff : )
+> **Ira** stands for: `Go-to` in spanish `Ir-a`. Can also mean rage or anger, That's all the feelings you have while handling HTTP stuff : )
 
 ---
 

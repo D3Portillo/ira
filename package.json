@@ -12,15 +12,15 @@
   },
   "keywords": [
     "fetch",
-    "wrapper",
     "fetch-api",
     "browser",
-    "request"
+    "request",
+    "http"
   ],
   "author": "Denny Portillo <d3portillo@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/D3Portillo/ira/issues"
   },
-  "homepage": "https://github.com/D3Portillo/ira#readme"
+  "homepage": "https://d3portillo.github.io/ira/"
 }
