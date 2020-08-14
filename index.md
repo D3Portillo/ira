@@ -1,4 +1,4 @@
-<img width="420" src="./assets/ira.svg"/>
+<img width="420" src="./assets/ira-text.svg"/>
 
 ## Npm Install
 
