@@ -1,4 +1,19 @@
-# Ira Fetch Wrapper
+# Ira - Fetch Wrapper 🎲
+
+<p align="center">
+  <a href="https://d3portillo.github.io/ira/">
+    <img src="./assets/ira.svg"/>
+  </a>
+  <br>
+  <br>
+  <br>
+  <strong>
+  <a href="https://codepen.io/D3Portillo/pen/poyjxwM">🔬 Codepen</a> ・
+  <a href="https://www.npmjs.com/package/irajs">📦 Go to npm</a>
+  </strong>
+</p>
+
+---
 
 **Ira Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
 
@@ -91,7 +106,9 @@ const request = ira.extend({
 - You can now fetch data with those settings
 
 ```js
-request.get("https://something").then(({ data: { blob } }) => console.info(null == blob))
+request
+  .get("https://something")
+  .then(({ data: { blob } }) => console.info(null == blob))
 // The blob response inside data obj is null
 ```
 
@@ -133,9 +150,9 @@ ira.get(`https://anendpoint`, {
 const someBufer = new Buffer()
 ira.post(`http://someurl`, {
   headers: {
-    "Content-type":"someDataType"
+    "Content-type": "someDataType",
   },
-  body: someBufer
+  body: someBufer,
 })
 ```
 
@@ -199,10 +216,10 @@ I'm currently working on a way of returning status on error
 
 ---
 
-> **Ira** stands for: Go to, rage or anger. That's all the feelings you have while handling HTTP stuff : )
-
 - Source: [./src/index.js](./src/index.js)
 - Changelog: [./CHANGELOG.md](./CHANGELOG.md)
+
+> **Ira** stands for: Go to, rage or anger. That's all the feelings you have while handling HTTP stuff : )
 
 ---
 

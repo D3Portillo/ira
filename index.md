@@ -1,6 +1,8 @@
-# Ira Fetch
+# Ira - Fetch Wrapper 🎲
 
-**Ira Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
+![Ira-logo](./assets/ira.svg)
+
+**Ira:** Vanilla JS Fetch API wrapper with goodies 🍒
 
 ## NPM Install
 
