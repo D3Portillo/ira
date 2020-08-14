@@ -1,8 +1,8 @@
-![Ira-logo](./assets/ira.svg)
+<img width="420" src="./assets/ira.svg"/>
 
 **Ira - Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
 
-## NPM Install
+## Npm Install
 
 ```
 npm install --save irajs
@@ -14,7 +14,7 @@ npm install --save irajs
 yarn add irajs
 ```
 
-## CDN
+## CDN Load
 
 ```html
 <script src="https://d3portillo.github.io/ira/src/index.js"></script>

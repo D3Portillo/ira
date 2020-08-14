@@ -1,15 +1,16 @@
 <p align="center">
   <a href="https://d3portillo.github.io/ira/">
-    <img src="./assets/ira.svg"/>
+    <img width="420" src="./assets/ira.svg"/>
   </a>
-  <br>
-  <br>
-  <br>
+</p>
+
+---
+
   <strong>
-  <a href="https://codepen.io/D3Portillo/pen/poyjxwM">🔬 Codepen</a> ・
+  <a href="https://codepen.io/D3Portillo/pen/poyjxwM">📝 Codepen</a> ・
+  <a href="https://observablehq.com/@d3portillo/ira-fetch-wrapper">🔬 Observable</a> ・
   <a href="https://www.npmjs.com/package/irajs">📦 Npm</a>
   </strong>
-</p>
 
 ---
 
@@ -19,7 +20,7 @@ Ira is a window.fetch API wrapper with some extra stuff. Debug logs, persistent 
 
 This little wrapper tries to function using just current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
 
-## NPM Install
+## Npm Install
 
 ```
 npm install --save irajs
@@ -31,7 +32,7 @@ npm install --save irajs
 yarn add irajs
 ```
 
-## CDN
+## CDN Load
 
 ```html
 <script src="https://d3portillo.github.io/ira/src/index.js"></script>
