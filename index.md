@@ -1,8 +1,6 @@
-# Ira - Fetch Wrapper 🎲
-
 ![Ira-logo](./assets/ira.svg)
 
-**Ira:** Vanilla JS Fetch API wrapper with goodies 🍒
+**Ira - Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
 
 ## NPM Install
 
@@ -24,4 +22,8 @@ yarn add irajs
 
 ## Documentation
 
-[https://github.com/D3Portillo/ira/blob/master/README.md](https://github.com/D3Portillo/ira/blob/master/README.md)
+[github.com/D3Portillo/ira/blob/master/README.md](https://github.com/D3Portillo/ira/blob/master/README.md)
+
+## Playground
+
+[observablehq.com/@d3portillo/ira-fetch-wrapper](https://observablehq.com/@d3portillo/ira-fetch-wrapper)

@@ -1,5 +1,3 @@
-# Ira - Fetch Wrapper 🎲
-
 <p align="center">
   <a href="https://d3portillo.github.io/ira/">
     <img src="./assets/ira.svg"/>
@@ -9,7 +7,7 @@
   <br>
   <strong>
   <a href="https://codepen.io/D3Portillo/pen/poyjxwM">🔬 Codepen</a> ・
-  <a href="https://www.npmjs.com/package/irajs">📦 Go to npm</a>
+  <a href="https://www.npmjs.com/package/irajs">📦 Npm</a>
   </strong>
 </p>
 
@@ -19,7 +17,7 @@
 
 Ira is a window.fetch API wrapper with some extra stuff. Debug logs, persistent settings and custom currying to request functions with a set of options.
 
-> This little wrapper tries to function using just current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
+This little wrapper tries to function using just current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
 
 ## NPM Install
 
@@ -38,6 +36,14 @@ yarn add irajs
 ```html
 <script src="https://d3portillo.github.io/ira/src/index.js"></script>
 ```
+
+## Playground
+
+Observable playground, live examples with the power of reactivity.
+
+> Recommended as start point
+
+https://observablehq.com/@d3portillo/ira-fetch-wrapper
 
 ## Examples
 
