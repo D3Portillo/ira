@@ -1,7 +1,5 @@
 <img width="420" src="./assets/ira.svg"/>
 
-**Ira - Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
-
 ## Npm Install
 
 ```
