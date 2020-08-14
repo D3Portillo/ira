@@ -18,7 +18,7 @@
 
 Ira is a window.fetch API wrapper with some extra stuff. Debug logs, persistent settings and custom currying to request functions with a set of options.
 
-This little wrapper tries to function using just current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
+This little wrapper tries to function using current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
 
 ## Npm Install
 
