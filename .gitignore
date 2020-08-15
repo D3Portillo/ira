@@ -1,7 +1,4 @@
 node_modules
-dist
-public
-.cache
 yarn.**
 tempo
 tests/index.html

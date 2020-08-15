@@ -3,9 +3,10 @@ const http = require("http")
 const mountPoint = "[[IRA]]"
 const testPoint = "[[TESTS]]"
 const template = fs.readFileSync(`${__dirname}/template.html`, "utf-8")
-
-const server = http.createServer((req, res) => {
-  const ira = fs.readFileSync(`${__dirname}/../src/index.js`, "utf-8")
+const isMinifiedTest = true
+const server = http.createServer((_, res) => {
+  const js = `${__dirname}/../src/index${isMinifiedTest ? ".min" : ""}.js`
+  const ira = fs.readFileSync(js, "utf-8")
   const tests = fs.readFileSync(`${__dirname}/tests.js`, "utf-8")
 
   res.writeHead(200, undefined, {

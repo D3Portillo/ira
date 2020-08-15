@@ -1,10 +1,14 @@
+// * DO NOT INCLUDE require("ira") here
 window.onload = () => {
   const init = () => {
     document.body.style = `font-family: Roboto, Open sans, Ubuntu, Tahoma; padding: 1rem`
     document.body.innerHTML = `
-    <b>
+    <b style="font-size: 2rem">
       Content log...
     </b>
+    <br/><br/>
+    <i>Open da ~ Dev console</i>
+    <hr style="height: 1px; border: none; background: rgba(0,0,0,0.35); margin: 1rem 0"/>
     <pre><code style="white-space: normal" id="logTag"></code></pre>
     `
     /**
@@ -12,23 +16,15 @@ window.onload = () => {
      * @param {?string} text
      * @param {?Boolean} isError
      */
-    return (text = "", isError = false) => {
-      /**
-       * @type {HTMLElement}
-       */
+    return (text = "") => {
       const log = window.logTag
       const t = JSON.stringify(text)
-      const content = isError
-        ? `<span style="color: red">${t}</span>`
-        : `<span>${t}</span>`
-
+      const content = `<span>${t}</span>`
       log.insertAdjacentHTML("beforeend", `${content}<br/><br/>`)
+      console.log(text)
     }
   }
   const log = init()
-  console.log = log
-  console.info = log
-  console.error = (...e) => log(e, true)
 
   //* ///////////////////////////////////////////////////////////////
   /**
@@ -38,33 +34,23 @@ window.onload = () => {
   ira
     .get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`)
     .then(({ data }) => {
-      console.log(data.json, data.text, data.blob)
-      // Automatic response parsing
+      log(data)
     })
 
-  console.info("POST METHOD")
+  log("Post Method")
   ira
     .post(`https://postman-echo.com/post`, {
       body: "This body will be returned",
       params: {
         token: 2,
       },
+      debug: true,
     })
     .then(({ data }) => {
-      console.log(data.json, data.text, data.blob)
+      log(data)
     })
 
-  console.info("GET METHOD With custom headers")
-  const request = ira.extend({
-    headers: {
-      "x-api-key": "BOg81b54cfD99ufEmd21sxgp696bm7XcT2F2jVOzdw21",
-      session: "LsZoeYLx2cAwMsauPsP56nWgMpu3T89Jy",
-    },
-    debug: true,
-    label: "Request with custom headers",
-    baseURL: "https://documenter.getpostman.com/view/3632562377",
-  })
+  log("Get image")
+  ira(`https://animeonegai.com/assets/img/spring4.png`).then(log)
 
-  request.get("/something")
-  ira.get("/", { params: { foo1: "bar1", foo2: "bar2" }, debug: true })
 }
