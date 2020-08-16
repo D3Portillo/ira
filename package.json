@@ -1,6 +1,6 @@
 {
   "name": "irajs",
-  "version": "0.0.4-beta0.1",
+  "version": "0.0.4-beta0.2",
   "description": "Ira - Vanilla JS Fetch API wrapper with goodies 🍒",
   "main": "src/index.min.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "git+https://github.com/D3Portillo/ira.git"
   },
   "scripts": {
-    "start": "node tests"
+    "start": "node tests && yarn terser src/index.js -o src/index.min.js --comments=all"
   },
   "keywords": [
     "fetch",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/D3Portillo/ira/issues"
   },
-  "homepage": "https://d3portillo.github.io/ira/"
+  "homepage": "https://d3portillo.github.io/ira/",
+  "devDependencies": {
+    "terser": "^5.1.0"
+  }
 }

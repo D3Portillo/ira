@@ -6,6 +6,7 @@ window.onload = () => {
     <b style="font-size: 2rem">
       Content log...
     </b>
+    <img src="http://localhost:5000/blob" alt="This will fail if Blob error response"/>
     <br/><br/>
     <i>Open da ~ Dev console</i>
     <hr style="height: 1px; border: none; background: rgba(0,0,0,0.35); margin: 1rem 0"/>
@@ -31,26 +32,57 @@ window.onload = () => {
    ** Test Playground for Ira - Fetch Wrapper
    */
 
-  ira
-    .get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`)
-    .then(({ data }) => {
-      log(data)
-    })
+  // * Response {data,text,blob} test
 
-  log("Post Method")
-  ira
-    .post(`https://postman-echo.com/post`, {
-      body: "This body will be returned",
-      params: {
-        token: 2,
-      },
-      debug: true,
-    })
-    .then(({ data }) => {
-      log(data)
-    })
+  ira.get("/text").then(({ data }) => {
+    console.log("text", data)
+    log(`TEXT_TEST: ${data.text != ""}`)
+  })
+  ira.get("/json").then(({ data }) => {
+    console.log("json", data)
+    log(`JSON_TEST: ${typeof data.json == "object"}`)
+  })
+  ira.get("/blob").then(({ data }) => {
+    console.log("blob", data)
+    log(`BLOB_TEST: ${data.blob != null}`)
+  })
 
+  // Extra stuff
   log("Get image")
-  ira(`https://animeonegai.com/assets/img/spring4.png`).then(log)
+  ira(`https://animeonegai.com/assets/img/spring4.png`).then(({ data }) => {
+    ira.blobToBase64(data.blob).then((image) => {
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        `<h2>Base 64 Image</h2><img src="${image}"/>`
+      )
+    })
+  })
 
+  // Deep extends
+  const request = ira.extend({
+    headers: {
+      "Content-type": "application/json",
+    },
+    debug: true,
+  })
+  request.get("/")
+
+  const request2 = request.extend({
+    headers: {
+      "Content-type": "application/pdf",
+      "x-api-key": "randomtext",
+    },
+    debug: true,
+  })
+  request2.get("/2")
+
+  // Deep fork config
+  request2.config({
+    headers: {
+      another: "header",
+    },
+  })
+  request2.get("/2-a")
+  request2.get("/2-b")
+  log(request2._config)
 }
