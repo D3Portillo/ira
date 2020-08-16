@@ -101,7 +101,8 @@ function f() {
                 if (parseBlob) {
                   const BIN_TYPES = /video|image|audio|application/g
                   const isBinary = BIN_TYPES.test(b.type)
-                  if (isBinary) t = ""
+                  const isUTF8 = /utf8|utf-8/gi.test(b.type)
+                  if (isBinary && !isUTF8) t = ""
                 }
                 const data = { json, text: t, blob: b }
                 send({
