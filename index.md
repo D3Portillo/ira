@@ -19,7 +19,17 @@ yarn add irajs
 ## CDN Load
 
 ```html
-<script src="https://d3portillo.github.io/ira/src/index.js"></script>
+<script src="https://d3portillo.github.io/ira/src/index.min.js"></script>
+```
+
+## Usage
+
+```js
+import ira from "irajs"
+// Requires
+const ira = require("irajs")
+// Start playing around
+ira.get("/stuff")
 ```
 
 ## Documentation

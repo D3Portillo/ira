@@ -3,7 +3,7 @@
  * @author Denny Portillo<hello@d3portillo.me>
  * @license MIT
  * @see https://github.com/d3portillo/ira
- * @version 0.0.4-beta0.2
+ * @version 0.0.5
  */
 
 function f() {
@@ -39,12 +39,17 @@ function f() {
      */
     /**
      * @param { String } url - URL To fetch from
-     * @param {{ headers: {}, body: ?String, params: {} }} extra - Your normal fetch opts
+     * @param {{ headers: {}, body: ?String, params: {}, debug: Boolean, parseBlob: Boolean }} extra - Your normal fetch opts
      * @param { INIT_IRA_CONFIG } config - Custom Ira config
      * @return { Promise<IraResponse> }
      */
     const fetchPromise = (url, extra = {}, config = {}) => {
-      config = { ...INIT_IRA_CONFIG, ...config, ...persistentIraConfig }
+      config = {
+        ...INIT_IRA_CONFIG,
+        ...extra,
+        ...config,
+        ...persistentIraConfig,
+      }
       let { headers = {}, body = "", params = {} } = extra
       const deepify = (obj = {}) => {
         const json = {}
@@ -90,20 +95,17 @@ function f() {
                 }
                 let json = {}
                 try {
-                  // Tries to parse t content
-                  // If parse fails then resul's plain text
                   json = JSON.parse(t)
                   if (typeof json == "string") json = {}
-                  else t = ""
                 } catch (_) {}
                 if (parseBlob) {
-                  const TEXT_TYPES = /text/g
-                  const blobTypeText = TEXT_TYPES.test(b.type)
-                  if (blobTypeText || b.type == "") b = null
-                  else t = ""
+                  const BIN_TYPES = /video|image|audio|application/g
+                  const isBinary = BIN_TYPES.test(b.type)
+                  if (isBinary) t = ""
                 }
+                const data = { json, text: t, blob: b }
                 send({
-                  data: { json, text: t, blob: b },
+                  data,
                   ok,
                   status,
                   statusText,
@@ -111,11 +113,11 @@ function f() {
                   error: null,
                 })
                 if (config.debug) {
-                  console.info(`${IRA_LOG} URL='${url}' >>> 🍃 REQ_DATA: `, {
+                  console.info(`🍃 ${IRA_LOG} URL='${url}' >>> RESPONSE: `, {
                     headers,
                     body,
                     config,
-                    extra,
+                    responseData: { data },
                   })
                 }
               })
@@ -123,7 +125,7 @@ function f() {
             .catch((error) => {
               const statusCode = 500
               console.error(
-                `${IRA_LOG} - Got error on request ⛔, URL='${url}' >>> REQ_DATA: ${error}`
+                `${IRA_LOG} - Got error on request ⛔, URL='${url}' >>> ${error}`
               )
               send({
                 data: { json: {}, text: "", blob: null },

@@ -42,7 +42,9 @@ yarn add irajs
 
 ```js
 import ira from "irajs"
+// Requires
 const ira = require("irajs")
+// Start playing around
 ira.get("/stuff")
 ```
 
@@ -123,29 +125,31 @@ ira.get("https://anendpoint", {
 // https://anendpoint/?token=222&another-token=354
 ```
 
-## Ira Object instances
+## The Ira Instance
 
 ```js
-IRA_RESPONSE = {
+RESPONSE = {
   data: { json: Object, text: String, blob: ?Blob }
   ok: Boolean,
   status: Number,
   statusText: String,
   statusCode: status<Number>,
-  error:?Error
+  error: ?Error
 }
-IRA_REQUEST_PROPS = {
+ON_REQUEST_PROPS = {
   headers: {},
   body: ?String,
+  debug: ?Boolean,
+  parseBlob: ?Boolean,
   ...`https://developer.mozilla.org/en-US/docs/Web/API/Request`
 }
-IRA_SETTINGS = {
+GLOBAL_SETTINGS = {
   headers: {},
   debug: Boolean,
   parseBlob: Boolean,
   baseURL: ?String,
 }
-IRA_HTTP_METHODS = {
+HTTP_METHODS = {
   get: Function,
   put: Function,
   post: Function,
@@ -156,18 +160,18 @@ IRA_HTTP_METHODS = {
   trace: Function,
 }
 
-// Exported object  {Main}
+// Exported object { Main }
 ira = {
   ...IRA_HTTP_METHODS,
   default(): IRA_HTTP_METHODS.get,
   _settings: Object,
   config: Function,
-  extend: Function() => IRA_HTTP_METHODS,
+  extend: Function() => ira /* Fork with provided settings */,
   blobToBase64: Function
 }
 ```
 
-Ira will return a void response if an error ocurred and status of 500,
+Ira will return a void response if an error ocurred and status of 500.
 
 ---
 

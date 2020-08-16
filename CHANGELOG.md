@@ -2,14 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2020-08-16
+
+### Changed
+
+- Forks now return another Ira instance
+
+### Fixed
+
+- All `.blob, .text, .json` responses are provided now
+
 ## [0.0.4-beta0.2] - 2020-08-16
 
-## Added
+### Added
 
 - Minified version - really added, comments kept : )
 - **Now you can .extend.extend.extend.... Ira's:** Keep in mind that from a `.extend` function prop `._config` will return config provided on function call.
 
-## Changed
+### Changed
 
 - Custom function export has been replaced
 
