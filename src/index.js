@@ -60,7 +60,7 @@ function f(forkConfig = {}) {
      * @return { Promise<IraResponse> }
      */
     const fetchPromise = (url, extra = {}) => {
-      config = {
+      const config = {
         ...IRA_CONFIG,
         ...ira._config,
         ...extra,
