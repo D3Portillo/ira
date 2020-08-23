@@ -48,11 +48,11 @@ const ira = require("irajs")
 ira.get("/stuff")
 ```
 
-[> The complete API reference](#Ira-API-Reference)
+[👉 The complete API reference](#Ira-API-Reference)
 
 ## Some examples
 
-### GET Method
+### Getting data
 
 ```js
 ira.get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`).then(({ data }) => {
@@ -60,7 +60,7 @@ ira.get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`).then(({ data }) => {
 })
 ```
 
-### Setting headers
+### Adding headers
 
 ```js
 ira.config({
@@ -77,7 +77,7 @@ const blob = new Blob(["something"])
 ira.blobToBase64(blob).then((base64) => console.log(base64))
 ```
 
-### Adding a base URL
+### Including a base URL
 
 ```js
 const request = ira.extend({
@@ -105,18 +105,6 @@ request
   .get("https://something")
   .then(({ data: { blob } }) => console.info(null == blob))
 // The blob response inside data obj is null
-```
-
-### Fetching with params
-
-```js
-ira.get("https://anendpoint", {
-  params: {
-    token: 222,
-    "another-token": 354,
-  },
-})
-// https://anendpoint/?token=222&another-token=354
 ```
 
 ## The Ira Instance
@@ -168,8 +156,6 @@ ira = {
 
 Ira will return a void response if an error ocurred and status of 500.
 
----
-
 ## Ira API Reference
 
 ### Table of contents
@@ -202,31 +188,31 @@ This interface rules among many props and methods, **`ON_REQUEST_PROPS:` [ira#th
 <a href="#default" id="default"># </a><b>ira</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L41 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // Your endpoint URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**GET** Method, `ira("/something")` is the same as `fetch("/something")`. The difference is ira.get returns a `Promise` which resolves to an Object including .json, .text and .blob methods.
+The GET method, `ira("/something")` is the same as `fetch("/something")`. The difference is ira.get returns a `Promise` which resolves to an Object including .json, .text and .blob methods.
 
 `ira().then(({data}) => { data.json | data.text | data.blob })`
 
 <a href="#get" id="get"># </a>ira<b>.get</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L169 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // That stuff URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**GET** Method, `ira()`. This is the same as doing `ira(URL)`
+Same as `ira()` method.
 
 <a href="#post" id="post"># </a>ira<b>.post</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L178 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // An endpoint
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**POST** Method, `ira.post("/something")` is the same as `fetch("/something", { method: "POST" })`.
+The POST method, `ira.post("/something")` is the same as `fetch("/something", { method: "POST" })`.
 
 You can include a body doing:
 
@@ -239,11 +225,11 @@ ira.post("/something", {
 <a href="#put" id="put"># </a>ira<b>.put</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L179 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // https://something
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**PUT** Method, `ira.put("/api")` is the same as `fetch("/api", { method: "PUT" })`.
+The HTTP PUT method, `ira.put("/api")` is the same as `fetch("/api", { method: "PUT" })`.
 
 You can include a body doing:
 
@@ -268,20 +254,20 @@ ira.put("/something", {
 <a href="#delete" id="delete"># </a>ira<b>.delete</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L175 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // Place an URL here
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**DELETE** Method, `ira.delete("/api")` is the same as `fetch("/api", { method: "DELETE" })`.
+That DELETE Http Method, `ira.delete("/api")` is the same as `fetch("/api", { method: "DELETE" })`.
 
 <a href="#connect" id="connect"># </a>ira<b>.connect</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L180 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // The place you want data from
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**CONNECT** Method, `ira.connect("/api")` is the same as `fetch("/api", { method: "CONNECT" })`.
+Doin a CONNECT method `ira.connect("/api")` is same as `fetch("/api", { method: "CONNECT" })`.
 
 You can include this config on your request:
 
@@ -298,31 +284,31 @@ You can include this config on your request:
 <a href="#options" id="options"># </a>ira<b>.options</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L181 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // That URL you want data from
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**OPTIONS** Method, `ira.options("/api")` is the same as `fetch("/api", { method: "OPTIONS" })`.
+When doing the OPTIONS Http method `ira.options("/api")` results to be same as doing `fetch("/api", { method: "OPTIONS" })`.
 
 <a href="#trace" id="trace"># </a>ira<b>.trace</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L41 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // Production or dev endpoint
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**TRACE** Method, `ira.trace("/api")` is the same as `fetch("/api", { method: "TRACE" })`.
+TRACE method, `ira.trace("/api")` is the same as `fetch("/api", { method: "TRACE" })`.
 
 <a href="#head" id="head"># </a>ira<b>.head</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L182 "Source")
 
 ```js
-URL = "" // Your URL
+URL = "" // Some resource URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
-**HEAD** Method, `ira.head("/api")` is the same as `fetch("/api", { method: "HEAD" })`.
+The HEAD method, `ira.head("/api")` is the same as `fetch("/api", { method: "HEAD" })`.
 
-### Extra methods
+### Extra Ira methods
 
 <a href="#blobtobase64" id="blobtobase64"># </a>ira<b>.blobToBase64</b>([<i>Blob</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L207 "Source")
 
@@ -478,4 +464,6 @@ If false any request you make wont perform a response.blob and your data will re
 - Changelog: [/CHANGELOG.md](./CHANGELOG.md)
 - License: [/LICENSE](./LICENSE)
 
-> **Ira** stands for: `Go-to` in spanish `Ir-a`. Can also mean rage or anger, That's all the feelings you have while handling HTTP stuff : )
+```
+**Ira** stands for: `Go-to` in spanish `Ir-a`. Can also mean rage or anger, That's all the feelings you have while handling HTTP stuff : )
+```
