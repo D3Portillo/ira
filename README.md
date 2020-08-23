@@ -16,9 +16,9 @@
 
 **Ira Fetch:** Vanilla JS Fetch API wrapper with goodies 🍒
 
-Ira is a window.fetch API wrapper with some extra stuff. Debug logs, persistent settings and custom currying to request functions with a set of options.
+Ira is a **small ~ 3kb** function which enhances current Fetch API with more, more goodies. Ira code isn't chopped, replaced with random chars or similar on .min.js version, it's just minified.
 
-This little wrapper tries to function using current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
+This goodies include debug logs, persistent settings and custom currying to request functions with a set of options. The little wrapper tries to function using current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
 
 ## Npm Install
 
@@ -308,7 +308,7 @@ CONFIG = ON_REQUEST_PROPS
 
 The HEAD method, `ira.head("/api")` is the same as `fetch("/api", { method: "HEAD" })`.
 
-### Extra Ira methods
+### Yes, more cool methods
 
 <a href="#blobtobase64" id="blobtobase64"># </a>ira<b>.blobToBase64</b>([<i>Blob</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L207 "Source")
 
@@ -419,9 +419,9 @@ CONFIG = {
 } // @see https://github.com/D3Portillo/ira#the-ira-instance
 ```
 
-If you want to check current ira config do `ira._config`. This is supposed to be changed with ``ira.config`. ira.\_config.headers = {}
+If you want to check current ira config do `ira._config`. This is supposed to be changed with `ira.config()`, still you can set `ira.\_config.headers = {}`
 
-### Some config props
+### Config[`._config`] props
 
 <a href="#baseurl" id="baseurl"># </a>ira<b>.\_config.baseURL</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L74 "Source")
 
@@ -452,18 +452,18 @@ ira.get("/anurl", {
 
 <a href="#debug" id="debug"># </a>ira<b>.\_config.debug</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L140 "Source")
 
-If true will log stuff on console when a request is made and when a response is obtained.
+If `true` will log stuff on console when a request is made and when a response is obtained.
 
 <a href="#parseblob" id="parseblob"># </a>ira<b>.\_config.parseBlob</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L105 "Source")
 
-If false any request you make wont perform a response.blob and your data will resolve with this as `null`
+If `false` any request you make wont perform a **response.blob** and your data will resolve with this as `null`
 
-### Some extra resources
+### Some resources
 
 - Source: [/src/index.js](./src/index.js)
 - Changelog: [/CHANGELOG.md](./CHANGELOG.md)
 - License: [/LICENSE](./LICENSE)
 
-```
+---
+
 **Ira** stands for: `Go-to` in spanish `Ir-a`. Can also mean rage or anger, That's all the feelings you have while handling HTTP stuff : )
-```
