@@ -7,7 +7,7 @@ Also, this little wrapper tries to function using current JS Engine features, no
 ## Npm Install
 
 ```
-npm i irajs
+npm install irajs
 ```
 
 ## Yarn Install
@@ -36,7 +36,9 @@ ira.get("/stuff")
 
 [github.com/D3Portillo/ira/blob/master/README.md](https://github.com/D3Portillo/ira/blob/master/README.md)
 
-## Playground
+[See Full API Reference ↗️](https://github.com/D3Portillo/ira#Ira-API-Reference)
+
+## A First-try Playground
 
 [observablehq.com/@d3portillo/ira-fetch-wrapper](https://observablehq.com/@d3portillo/ira-fetch-wrapper)
 

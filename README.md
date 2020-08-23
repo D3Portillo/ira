@@ -23,7 +23,7 @@ This little wrapper tries to function using current JS Engine features, no babel
 ## Npm Install
 
 ```
-npm i irajs
+npm install irajs
 ```
 
 ## Yarn Install
@@ -50,7 +50,7 @@ ira.get("/stuff")
 
 [> The complete API reference](#Ira-API-Reference)
 
-## Examples
+## Some examples
 
 ### GET Method
 
@@ -60,7 +60,7 @@ ira.get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`).then(({ data }) => {
 })
 ```
 
-### Set Headers to any new request
+### Setting headers
 
 ```js
 ira.config({
@@ -70,14 +70,14 @@ ira.config({
 })
 ```
 
-### Parse blob to base64
+### Parsing blob to base64 string
 
 ```js
 const blob = new Blob(["something"])
 ira.blobToBase64(blob).then((base64) => console.log(base64))
 ```
 
-### Base URL
+### Adding a base URL
 
 ```js
 const request = ira.extend({
@@ -87,7 +87,7 @@ const request = ira.extend({
 request.get("/binary") //https://yourendpoint.com/dev/branch/binary
 ```
 
-### Extend Ira fork
+### Extending a fork
 
 A custom settings fork of main Ira function that's gapped to provided - config
 
@@ -118,12 +118,6 @@ ira.get("https://anendpoint", {
 })
 // https://anendpoint/?token=222&another-token=354
 ```
-
-## Playground
-
-Observable playground, live examples with the power of reactivity.
-
-https://observablehq.com/@d3portillo/ira-fetch-wrapper
 
 ## The Ira Instance
 
@@ -193,11 +187,15 @@ Ira will return a void response if an error ocurred and status of 500.
 - [ira.on()](#onevent)
 - [ira.extend()](#extend)
 - [ira.config()](#config)
-- [ira.\_config](#getConfig)
+- [ira.\_config](#getconfig)
+- [{ baseURL }](#baseurl)
+- [{ params }](#params)
+- [{ debug }](#debug)
+- [{ parseBlob }](#parseblob)
 
 ### HTTP Methods
 
-This interface rules among many props and methods, **`ON_REQUEST_PROPS:` https://github.com/D3Portillo/ira#the-ira-instance**
+This interface rules among many props and methods, **`ON_REQUEST_PROPS:` [ira#the-ira-instance](https://github.com/D3Portillo/ira#the-ira-instance)**
 
 ---
 
@@ -208,6 +206,10 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**GET** Method, `ira("/something")` is the same as `fetch("/something")`. The difference is ira.get returns a `Promise` which resolves to an Object including .json, .text and .blob methods.
+
+`ira().then(({data}) => { data.json | data.text | data.blob })`
+
 <a href="#get" id="get"># </a>ira<b>.get</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L169 "Source")
 
 ```js
@@ -215,11 +217,23 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**GET** Method, `ira()`. This is the same as doing `ira(URL)`
+
 <a href="#post" id="post"># </a>ira<b>.post</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L178 "Source")
 
 ```js
 URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
+```
+
+**POST** Method, `ira.post("/something")` is the same as `fetch("/something", { method: "POST" })`.
+
+You can include a body doing:
+
+```js
+ira.post("/something", {
+  body: "some-body",
+})
 ```
 
 <a href="#put" id="put"># </a>ira<b>.put</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L179 "Source")
@@ -229,6 +243,28 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**PUT** Method, `ira.put("/api")` is the same as `fetch("/api", { method: "PUT" })`.
+
+You can include a body doing:
+
+```js
+ira.put("/something", {
+  body: "some-body",
+})
+```
+
+You also can show some debug messages on console by adding `debug: true`.
+
+```js
+ira.put("/something", {
+  body: "some-body",
+  debug: true,
+})
+
+// This will log on request start messages and
+// When promise is resolved with your data
+```
+
 <a href="#delete" id="delete"># </a>ira<b>.delete</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L175 "Source")
 
 ```js
@@ -236,11 +272,27 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**DELETE** Method, `ira.delete("/api")` is the same as `fetch("/api", { method: "DELETE" })`.
+
 <a href="#connect" id="connect"># </a>ira<b>.connect</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L180 "Source")
 
 ```js
 URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
+```
+
+**CONNECT** Method, `ira.connect("/api")` is the same as `fetch("/api", { method: "CONNECT" })`.
+
+You can include this config on your request:
+
+```js
+{
+  headers: {}, // Your request headers
+  body: ?String, // Your request body
+  debug: ?Boolean, // if true shows some stuff on console
+  parseBlob: ?Boolean, // if false .blob event wont execute
+  params: {} // Your URL params ?reqid=3&something=data
+}
 ```
 
 <a href="#options" id="options"># </a>ira<b>.options</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L181 "Source")
@@ -250,6 +302,8 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**OPTIONS** Method, `ira.options("/api")` is the same as `fetch("/api", { method: "OPTIONS" })`.
+
 <a href="#trace" id="trace"># </a>ira<b>.trace</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L41 "Source")
 
 ```js
@@ -257,12 +311,16 @@ URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
 
+**TRACE** Method, `ira.trace("/api")` is the same as `fetch("/api", { method: "TRACE" })`.
+
 <a href="#head" id="head"># </a>ira<b>.head</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L182 "Source")
 
 ```js
 URL = "" // Your URL
 CONFIG = ON_REQUEST_PROPS
 ```
+
+**HEAD** Method, `ira.head("/api")` is the same as `fetch("/api", { method: "HEAD" })`.
 
 ### Extra methods
 
@@ -272,10 +330,35 @@ CONFIG = ON_REQUEST_PROPS
 Blob = new Blob() // A JS Binary long object
 ```
 
+You can parse any `Blob` into a base64 string by doing `ira.blobToBase64`. This returns a Promise which resolves into a String. This method will always resolve if there's an error check out you console. If Promise fails will resolve to `""`
+
 <a href="#onevent" id="onevent"># </a>ira<b>.on</b>([<i>Event</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L233 "Source")
 
 ```js
 Event = "request" | "response"
+```
+
+You can add a custom listener when ira or it's forks perform a request or when a response is succeded. You can set this triggers like this `ira.on("response", callback)`.
+
+Example:
+
+```js
+ira.on("request", (request) => {
+  const { url, statusCode, method, headers, config } = request
+  if (statusCode == 200) {
+    console.log("This will always succeed")
+    /*
+     This callback is made as soon as request is made
+     so statusCode is 200, you can log config, check path and include some magic
+    */
+  }
+})
+
+ira.on("response", (response) => {
+  const { url, statusCode, method, headers, config } = request
+  // Lets say you want to kick user when it's forbidden
+  if (statusCode == 403) killSession()
+})
 ```
 
 <a href="#extend" id="extend"># </a>ira<b>.extend</b>([<i>CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L244 "Source")
@@ -289,6 +372,29 @@ CONFIG = {
 } // @see https://github.com/D3Portillo/ira#the-ira-instance
 ```
 
+This method returns a new Ira instance, you can replace default Settings with your custom ones. This can be helpfull if making request to API's where headers are somewhat "persistent", for example x-api-key's or that.
+
+Example:
+
+```js
+const request = ira.extend({
+  headers: {
+    "x-api-key": "somethingawesome",
+    "Content-type": "application/json",
+  },
+})
+
+// Then you can avoid rewriting those headers again
+
+request.get("/endpoint", {
+  body: {
+    user: "D3Portillo",
+    base: "Somebass",
+  },
+})
+// This will include those headers added on .extend call
+```
+
 <a href="#config" id="config"># </a>ira<b>.config</b>([<i>CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L194 "Source")
 
 ```js
@@ -300,9 +406,23 @@ CONFIG = {
 } // @see https://github.com/D3Portillo/ira#the-ira-instance
 ```
 
+This method is used to replace current ira or fork settings. This replaces .extend method stuff with those new ones you provide.
+
+```js
+const req = ira.extend({
+  baseURL: "https://google.com",
+})
+
+// Now, let's pretend you want to change that baseURL
+req.settings({
+  baseURL: "https://duckduckgo.com",
+})
+// This will replace request's baseURL google.com with duckduck.go
+```
+
 ### Acces current config
 
-<a href="#getConfig" id="getConfig"># </a>ira<b>.\_config</b><i>\<CONFIG></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L188 "Source")
+<a href="#getconfig" id="getconfig"># </a>ira<b>.\_config</b><i>\<CONFIG></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L188 "Source")
 
 ```js
 CONFIG = {
@@ -312,6 +432,45 @@ CONFIG = {
   baseURL: ?String,
 } // @see https://github.com/D3Portillo/ira#the-ira-instance
 ```
+
+If you want to check current ira config do `ira._config`. This is supposed to be changed with ``ira.config`. ira.\_config.headers = {}
+
+### Some config props
+
+<a href="#baseurl" id="baseurl"># </a>ira<b>.\_config.baseURL</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L74 "Source")
+
+You can add a baseURL to make your requests.
+
+```js
+ira.settings({
+  baseURL: "https://localhost:5000",
+})
+ira.get("/anurl", {
+  params: {
+    somelikeparam: "somevalue",
+  },
+}) // Fetches https://localhost:5000/anurl
+```
+
+<a href="#params" id="params"># </a>ira<b>.\_config.params</b><i>\<Object></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L76 "Source")
+
+You can add params on your request like this:
+
+```js
+ira.get("/anurl", {
+  params: {
+    somelikeparam: "somevalue",
+  },
+}) // Fetches to /anurl?somelikeparam=somevalue
+```
+
+<a href="#debug" id="debug"># </a>ira<b>.\_config.debug</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L140 "Source")
+
+If true will log stuff on console when a request is made and when a response is obtained.
+
+<a href="#parseblob" id="parseblob"># </a>ira<b>.\_config.parseBlob</b><i>\<Boolean></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L105 "Source")
+
+If false any request you make wont perform a response.blob and your data will resolve with this as `null`
 
 ### Some extra resources
 
