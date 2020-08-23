@@ -10,6 +10,7 @@ const { exec } = require("child_process")
  */
 const isMinifiedTest = false
 const server = http.createServer(({ url }, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*")
   exec(`yarn minify`, (superformatError) => {
     // minify index.min.js file along with main working index
     superformatError && console.log({ superformatError })

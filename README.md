@@ -23,7 +23,7 @@ This little wrapper tries to function using current JS Engine features, no babel
 ## Npm Install
 
 ```
-npm install --save irajs
+npm i irajs
 ```
 
 ## Yarn Install
@@ -66,7 +66,7 @@ ira.get(`https://postman-echo.com/get?foo1=bar1&foo2=bar2`).then(({ data }) => {
 })
 ```
 
-### Set global headers
+### Set Headers to any new request
 
 ```js
 ira.config({
@@ -143,7 +143,7 @@ ON_REQUEST_PROPS = {
   parseBlob: ?Boolean,
   ...`https://developer.mozilla.org/en-US/docs/Web/API/Request`
 }
-GLOBAL_SETTINGS = {
+IRA_SETTINGS = {
   headers: {},
   debug: Boolean,
   parseBlob: Boolean,
@@ -162,11 +162,11 @@ HTTP_METHODS = {
 
 // Exported object { Main }
 ira = {
-  ...IRA_HTTP_METHODS,
-  default(): IRA_HTTP_METHODS.get,
+  ...HTTP_METHODS,
+  default(): HTTP_METHODS.get,
   _settings: Object,
   config: Function,
-  extend: Function() => ira /* Fork with provided settings */,
+  extend: Function() => ira /* Fork with provided config */,
   blobToBase64: Function
 }
 ```

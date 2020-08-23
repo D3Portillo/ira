@@ -7,7 +7,7 @@ Also, this little wrapper tries to function using current JS Engine features, no
 ## Npm Install
 
 ```
-npm install --save irajs
+npm i irajs
 ```
 
 ## Yarn Install
@@ -39,3 +39,10 @@ ira.get("/stuff")
 ## Playground
 
 [observablehq.com/@d3portillo/ira-fetch-wrapper](https://observablehq.com/@d3portillo/ira-fetch-wrapper)
+
+## Codepen
+
+<iframe height="518" style="width: 100%;" scrolling="no" title="Ira Fetch" src="https://codepen.io/D3Portillo/embed/poyjxwM?height=518&theme-id=light&default-tab=js,result" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true">
+  See the Pen <a href='https://codepen.io/D3Portillo/pen/poyjxwM'>Ira Fetch</a> by Denny Portillo
+  (<a href='https://codepen.io/D3Portillo'>@D3Portillo</a>) on <a href='https://codepen.io'>CodePen</a>.
+</iframe>

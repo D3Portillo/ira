@@ -6,8 +6,8 @@
  * @version 0.0.5
  */
 
-function f() {
-  const INIT_IRA_CONFIG = {
+function f(forkConfig = {}) {
+  const IRA_CONFIG = {
     headers: {},
     debug: false,
     parseBlob: true,
@@ -24,9 +24,26 @@ function f() {
     trace: "TRACE",
   }
   const IRA_LOG = "IraFetch >>>"
-  let persistentIraConfig = {}
+  const deepify = (obj = {}) => {
+    const json = {}
+    Object.keys(obj).forEach((prop) => {
+      const V = obj[prop]
+      json[prop] = typeof V != "string" ? JSON.stringify(V) : V
+    })
+    return json
+  }
 
-  function makeIraFetch(method = "POST", options = { acceptsBody: true }) {
+  /**
+   * Ira.get Method
+   * @param { String } url
+   * @param { IRA_CONFIG } extra
+   */
+  function ira(url = "string", extra) {
+    return makeIraFetch(IRA_METHODS.get, {
+      acceptsBody: false,
+    })(url, extra)
+  }
+  function makeIraFetch(method = "POST", opt = { acceptsBody: true }) {
     /**
      * Ira Response Object
      * @typedef { Object } IraResponse
@@ -40,29 +57,19 @@ function f() {
     /**
      * @param { String } url - URL To fetch from
      * @param {{ headers: {}, body: ?String, params: {}, debug: Boolean, parseBlob: Boolean }} extra - Your normal fetch opts
-     * @param { INIT_IRA_CONFIG } config - Custom Ira config
      * @return { Promise<IraResponse> }
      */
-    const fetchPromise = (url, extra = {}, config = {}) => {
+    const fetchPromise = (url, extra = {}) => {
       config = {
-        ...INIT_IRA_CONFIG,
+        ...IRA_CONFIG,
+        ...ira._config,
         ...extra,
-        ...config,
-        ...persistentIraConfig,
+        ...forkConfig,
       }
       let { headers = {}, body = "", params = {} } = extra
-      const deepify = (obj = {}) => {
-        const json = {}
-        Object.keys(obj).forEach((prop) => {
-          let value = obj[prop]
-          json[prop] = typeof value != "string" ? JSON.stringify(value) : value
-        })
-        return json
-      }
       headers = deepify({ ...config.headers, ...headers })
-      const contentType =
-        headers["Content-Type"] || headers["Content-type"] || ""
-      if (contentType.includes("json")) body = deepify(body)
+      const cType = headers["Content-Type"] || headers["Content-type"] || ""
+      if (cType.includes("json")) body = deepify(body)
       try {
         let { baseURL, parseBlob } = config
         url = baseURL ? `${baseURL}${url}` : url
@@ -76,12 +83,19 @@ function f() {
         if (!fetch) throw new Error("Not inside a browser")
         if (!url) throw new Error("URL not provided")
         return new Promise((send) => {
+          ira.__exec_on.request({
+            url,
+            statusCode: 200,
+            method,
+            headers: new Headers(headers),
+            config,
+          })
           if (config.debug) console.info(`${IRA_LOG} URL='${url}' >>> SENT ⚡`)
           fetch(url, {
             ...extra,
             method,
             headers,
-            ...(options.acceptsBody ? { body } : {}),
+            ...(opt.acceptsBody ? { body } : {}),
           })
             .then((response) => {
               const { ok, status, statusText } = response
@@ -99,24 +113,32 @@ function f() {
                   if (typeof json == "string") json = {}
                 } catch (_) {}
                 if (parseBlob) {
-                  const BIN_TYPES = /video|image|audio|application/g
-                  const isBinary = BIN_TYPES.test(b.type)
+                  const BIN_TYPE = /video|image|audio|ogg|pdf|rar|zip|font|7z|flash|x-/g
+                  // Posible blob types to binaries - this will be too ugly parsed
+                  // to utf-8 string from resposne.text
+                  const isBinary = BIN_TYPE.test(b.type)
                   const isUTF8 = /utf8|utf-8/gi.test(b.type)
                   if (isBinary && !isUTF8) t = ""
                 }
                 const data = { json, text: t, blob: b }
+                const statusCode = status
                 send({
                   data,
                   ok,
                   status,
                   statusText,
-                  statusCode: status,
+                  statusCode,
                   error: null,
+                })
+                ira.__exec_on.response({
+                  url,
+                  statusCode,
+                  method,
+                  headers: response.headers,
+                  config,
                 })
                 if (config.debug) {
                   console.info(`🍃 ${IRA_LOG} URL='${url}' >>> RESPONSE: `, {
-                    headers,
-                    body,
                     config,
                     responseData: { data },
                   })
@@ -124,16 +146,16 @@ function f() {
               })
             })
             .catch((error) => {
-              const statusCode = 500
               console.error(
-                `${IRA_LOG} - Got error on request ⛔, URL='${url}' >>> ${error}`
+                `⛔ ${IRA_LOG} - Got error on request, URL='${url}' >>> ${error}`,
+                { config }
               )
               send({
                 data: { json: {}, text: "", blob: null },
                 ok: false,
-                status: statusCode,
+                status: 500,
                 statusText: error,
-                statusCode,
+                statusCode: 500,
                 error,
               })
             })
@@ -144,12 +166,6 @@ function f() {
     }
     return fetchPromise
   }
-  function ira(url = "string", extra = INIT_IRA_CONFIG) {
-    return makeIraFetch(IRA_METHODS.get, {
-      acceptsBody: false,
-    })(url, extra)
-  }
-  // * Attach methods to Ira obj
   ira.get = makeIraFetch(IRA_METHODS.get, {
     acceptsBody: false,
   })
@@ -166,22 +182,21 @@ function f() {
   ira.trace = makeIraFetch(IRA_METHODS.trace)
 
   /**
-   * Acces Ira persistent config
-   * @type { INIT_IRA_CONFIG }
+   * Acces your current Ira config
+   * @type { IRA_CONFIG }
    */
   ira._config = {}
 
   /**
    * Sets persisten config headers or body for future requests
-   * @param { INIT_IRA_CONFIG } config
+   * @param { IRA_CONFIG } config
    */
   ira.config = (config = {}) => {
     if (!Object.entries(config).length) {
       // We reset config if *empty { } , is provided
-      config = { ...INIT_IRA_CONFIG }
+      config = { ...IRA_CONFIG }
     }
-    persistentIraConfig = { ...config }
-    ira._config = persistentIraConfig
+    ira._config = { ...IRA_CONFIG, ...config }
   }
 
   /**
@@ -190,41 +205,53 @@ function f() {
    * @returns { Promise<String> }
    */
   ira.blobToBase64 = (blob) => {
-    return new Promise((returns) => {
+    return new Promise((cb) => {
       try {
-        const reader = new FileReader()
-        reader.onload = () => returns(reader.result)
-        reader.readAsDataURL(blob)
+        const rdr = new FileReader()
+        rdr.onload = () => cb(rdr.result)
+        rdr.readAsDataURL(blob)
       } catch (e) {
         console.error(`${IRA_LOG} - Got error on Blob parse >>> ${e}`)
-        returns("")
+        cb("")
       }
     })
   }
 
+  ira.__exec_on = {
+    request: () => null,
+    response: () => null,
+  }
   /**
-   * Sets config and returns a modded Ira function
-   * @param { INIT_IRA_CONFIG } config
-   * @returns { ira }
+   * @callback cbFunction
+   * @param {{ url: String, statusCode: ?Number, method: String, headers: {}, config: {} }} callbackObject
    */
-  ira.extend = (config) => {
-    const myMethods = {}
-    Object.keys(IRA_METHODS).map((name) => {
-      myMethods[name] = (url, extra) => ira[name](url, extra, config)
-    })
-    return {
-      ...myMethods,
-      _config: config,
-      extend: ira.extend,
-      blobToBase64: ira.blobToBase64,
-      config: ira.config,
+  /**
+   * Add your custom callbacks on response and request events
+   * @param {("request" | "response")} event
+   * @param { cbFunction } callback - Request or Response Objects Callback
+   */
+  ira.on = (event, callback) => {
+    if (typeof callback == "function" && ira.__exec_on[event]) {
+      ira.__exec_on[event] = callback
     }
   }
 
+  /**
+   * Sets config and returns a custom Ira Fork
+   * @param { IRA_CONFIG } config
+   * @returns { ira }
+   */
+  ira.extend = (conf = {}) => {
+    conf.headers = conf.headers ? conf.headers : {}
+    const iH = ira._config.headers
+    conf.headers = iH ? { ...iH, ...conf.headers } : conf.headers
+    const __ira = f(conf)
+    __ira.config({ ...ira._config, ...conf })
+    return __ira
+  }
   return ira
 }
 
-// Trying to export function
 "object" == typeof exports && "object" == typeof module
   ? (module.exports = f())
   : "object" == typeof exports

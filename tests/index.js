@@ -58,35 +58,23 @@ window.onload = () => {
     })
   })
 
-  // Deep extends
-  const request = ira.extend({
+  ira.config({
     headers: {
-      "Content-type": "application/json",
+      "first-config": true,
     },
     debug: true,
   })
-  request.get("/")
+  log(ira._config)
 
-  const request2 = request.extend({
+  const second = ira.extend({
     headers: {
-      "Content-type": "application/pdf",
-      "x-api-key": "randomtext",
-    },
-    debug: true,
-  })
-  request2.get("/2")
-
-  // Deep fork config
-  request2.config({
-    headers: {
-      another: "header",
+      second: true,
     },
   })
-  request2.get("/2-a")
-  request2.get("/2-b")
-  log(request2._config)
-  log("Ira JS text")
-  ira.get("/js", { debug: true }).then(({ data }) => {
-    console.log({ data })
-  })
+  second.on("request", (onCB) => console.error({ onCB }))
+
+  second.get("/")
+  second("/second")
+
+  log(second._config)
 }
