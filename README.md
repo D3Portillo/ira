@@ -48,13 +48,7 @@ const ira = require("irajs")
 ira.get("/stuff")
 ```
 
-## Playground
-
-Observable playground, live examples with the power of reactivity.
-
-> Recommended as start point
-
-https://observablehq.com/@d3portillo/ira-fetch-wrapper
+[> The complete API reference](#Ira-API-Reference)
 
 ## Examples
 
@@ -125,6 +119,12 @@ ira.get("https://anendpoint", {
 // https://anendpoint/?token=222&another-token=354
 ```
 
+## Playground
+
+Observable playground, live examples with the power of reactivity.
+
+https://observablehq.com/@d3portillo/ira-fetch-wrapper
+
 ## The Ira Instance
 
 ```js
@@ -141,6 +141,7 @@ ON_REQUEST_PROPS = {
   body: ?String,
   debug: ?Boolean,
   parseBlob: ?Boolean,
+  params: {},
   ...`https://developer.mozilla.org/en-US/docs/Web/API/Request`
 }
 IRA_SETTINGS = {
@@ -174,6 +175,145 @@ ira = {
 Ira will return a void response if an error ocurred and status of 500.
 
 ---
+
+## Ira API Reference
+
+### Table of contents
+
+- [ira()](#default)
+- [ira.get()](#get)
+- [ira.post()](#post)
+- [ira.put()](#post)
+- [ira.delete()](#delete)
+- [ira.connect()](#connect)
+- [ira.options()](#options)
+- [ira.trace()](#trace)
+- [ira.head()](#head)
+- [ira.blobToBase64()](#blobtobase64)
+- [ira.on()](#onevent)
+- [ira.extend()](#extend)
+- [ira.config()](#config)
+- [ira.\_config](#getConfig)
+
+### HTTP Methods
+
+This interface rules among many props and methods, **`ON_REQUEST_PROPS:` https://github.com/D3Portillo/ira#the-ira-instance**
+
+---
+
+<a href="#default" id="default"># </a><b>ira</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L41 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#get" id="get"># </a>ira<b>.get</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L169 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#post" id="post"># </a>ira<b>.post</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L178 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#put" id="put"># </a>ira<b>.put</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L179 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#delete" id="delete"># </a>ira<b>.delete</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L175 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#connect" id="connect"># </a>ira<b>.connect</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L180 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#options" id="options"># </a>ira<b>.options</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L181 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#trace" id="trace"># </a>ira<b>.trace</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L41 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+<a href="#head" id="head"># </a>ira<b>.head</b>([<i>URL, CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L182 "Source")
+
+```js
+URL = "" // Your URL
+CONFIG = ON_REQUEST_PROPS
+```
+
+### Extra methods
+
+<a href="#blobtobase64" id="blobtobase64"># </a>ira<b>.blobToBase64</b>([<i>Blob</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L207 "Source")
+
+```js
+Blob = new Blob() // A JS Binary long object
+```
+
+<a href="#onevent" id="onevent"># </a>ira<b>.on</b>([<i>Event</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L233 "Source")
+
+```js
+Event = "request" | "response"
+```
+
+<a href="#extend" id="extend"># </a>ira<b>.extend</b>([<i>CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L244 "Source")
+
+```js
+CONFIG = {
+  headers: {},
+  debug: Boolean,
+  parseBlob: Boolean,
+  baseURL: ?String,
+} // @see https://github.com/D3Portillo/ira#the-ira-instance
+```
+
+<a href="#config" id="config"># </a>ira<b>.config</b>([<i>CONFIG</i>]) [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L194 "Source")
+
+```js
+CONFIG = {
+  headers: {},
+  debug: Boolean,
+  parseBlob: Boolean,
+  baseURL: ?String,
+} // @see https://github.com/D3Portillo/ira#the-ira-instance
+```
+
+### Acces current config
+
+<a href="#getConfig" id="getConfig"># </a>ira<b>.\_config</b><i>\<CONFIG></i> [<>](https://github.com/D3Portillo/ira/blob/master/src/index.js#L188 "Source")
+
+```js
+CONFIG = {
+  headers: {},
+  debug: Boolean,
+  parseBlob: Boolean,
+  baseURL: ?String,
+} // @see https://github.com/D3Portillo/ira#the-ira-instance
+```
+
+### Some extra resources
 
 - Source: [/src/index.js](./src/index.js)
 - Changelog: [/CHANGELOG.md](./CHANGELOG.md)
