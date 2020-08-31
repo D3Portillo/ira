@@ -72,9 +72,21 @@ window.onload = () => {
     },
   })
   second.on("request", (onCB) => console.error({ onCB }))
-
   second.get("/")
   second("/second")
-
   log(second._config)
+  second.config({
+    headers: {},
+    baseURL: "/",
+    debug: true,
+  })
+  log(second._config)
+  const third = second.extend({
+    headers: {
+      one: 2,
+    },
+    baseURL: "/2",
+  })
+  third()
+  log(third._config)
 }

@@ -3,7 +3,7 @@
  * @author Denny Portillo<hello@d3portillo.me>
  * @license MIT
  * @see https://github.com/d3portillo/ira
- * @version 0.0.5
+ * @version 0.0.6
  */
 
 function f(forkConfig = {}) {
@@ -38,7 +38,7 @@ function f(forkConfig = {}) {
    * @param { String } url
    * @param { IRA_CONFIG } extra
    */
-  function ira(url = "string", extra) {
+  function ira(url = "/", extra) {
     return makeIraFetch(IRA_METHODS.get, {
       acceptsBody: false,
     })(url, extra)
@@ -59,12 +59,12 @@ function f(forkConfig = {}) {
      * @param {{ headers: {}, body: ?String, params: {}, debug: Boolean, parseBlob: Boolean }} extra - Your normal fetch opts
      * @return { Promise<IraResponse> }
      */
-    const fetchPromise = (url, extra = {}) => {
+    const fetchPromise = (url = "/", extra = {}) => {
       const config = {
         ...IRA_CONFIG,
-        ...ira._config,
         ...extra,
         ...forkConfig,
+        ...ira._config,
       }
       let { headers = {}, body = "", params = {} } = extra
       headers = deepify({ ...config.headers, ...headers })
@@ -196,7 +196,7 @@ function f(forkConfig = {}) {
       // We reset config if *empty { } , is provided
       config = { ...IRA_CONFIG }
     }
-    ira._config = { ...IRA_CONFIG, ...config }
+    ira._config = { ...config }
   }
 
   /**

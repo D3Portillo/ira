@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2020-08-30
+
+### Added
+
+- `on()` event listeners, currently functioning with on "request" and "response" events occur.
+
+### Fixed
+
+- `.text` method will return `""` if text is from a binary.
+
 ## [0.0.5] - 2020-08-16
 
 ### Changed

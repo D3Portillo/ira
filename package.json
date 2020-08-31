@@ -1,6 +1,6 @@
 {
   "name": "irajs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Ira - Vanilla JS Fetch API wrapper with goodies 🍒",
   "main": "src/index.min.js",
   "repository": {

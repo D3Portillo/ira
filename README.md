@@ -107,6 +107,8 @@ request
 // The blob response inside data obj is null
 ```
 
+> This method extends from Ira Object
+
 ## The Ira Instance
 
 ```js
