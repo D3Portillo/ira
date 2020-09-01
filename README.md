@@ -18,7 +18,11 @@
 
 Ira is a **small ~ 3kb** function which enhances current Fetch API with more, more goodies. Ira code isn't chopped, replaced with random chars or similar on .min.js version, it's just minified.
 
-This goodies include debug logs, persistent settings and custom currying to request functions with a set of options. The little wrapper tries to function using current JS Engine features, no babel or typescript used. It's plain vanilla Javascript.
+Ira goodies include debug logs, persistent settings and custom currying to request functions with a set of options. The little wrapper tries to function using current JS Engine features, no babel or typescript used just plain vanilla Javascript.
+
+![Version](https://img.shields.io/npm/v/irajs/latest)
+![Size](https://img.shields.io/bundlephobia/minzip/irajs)
+![Downloads](https://img.shields.io/npm/dw/irajs)
 
 ## Npm Install
 
